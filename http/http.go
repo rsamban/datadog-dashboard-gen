@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 )
 
 // SendRequest sends http requests
-func SendRequest(method string, url string, user string, passwd string, data string) (string, error) {
+func SendRequest(method, url, user, passwd, clientToken, data string) (string, error) {
 	//Ignore Self Signed SSL
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -22,7 +23,9 @@ func SendRequest(method string, url string, user string, passwd string, data str
 	}
 
 	//Set Auth
-	if user != "" && passwd != "" {
+	if clientToken != "" {
+		req.Header.Add("Authorization", "Bearer "+clientToken)
+	} else if user != "" && passwd != "" {
 		req.SetBasicAuth(user, passwd)
 	}
 
@@ -30,12 +33,21 @@ func SendRequest(method string, url string, user string, passwd string, data str
 	if method == "POST" {
 		req.Header.Add("Content-type", "application/json")
 	}
+	dumpHttp := true
+	if dumpHttp {
+		dump, _ := httputil.DumpRequest(req, true)
+		fmt.Println(string(dump))
+	}
 
 	//Make Client http Request
 	client := http.Client{Transport: tr}
 	res, err := client.Do(req)
 	if err != nil {
 		return "", err
+	}
+	if dumpHttp {
+		dump, _ := httputil.DumpResponse(res, true)
+		fmt.Println(string(dump))
 	}
 
 	body, err := ioutil.ReadAll(res.Body)

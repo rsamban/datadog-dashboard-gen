@@ -2,3 +2,6 @@ package: github.com/pivotalservices/datadog-dashboard-gen
 import:
 - package: github.com/onsi/ginkgo
 - package: github.com/onsi/gomega
+- package: github.com/cloudfoundry-incubator/uaa-go-client
+- package: github.com/cloudfoundry/lager
+- package: github.com/cloudfoundry/clock

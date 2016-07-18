@@ -77,7 +77,7 @@ func ValidateAPIVersion(client *Client) error {
 	}
 
 	if version != "2.0" {
-		return fmt.Errorf("This version of Ops Manager (using api version ''" + version + "') is not supported")
+		return fmt.Errorf("This version of Ops Manager: '" + version + "' is not supported")
 	}
 
 	return nil
