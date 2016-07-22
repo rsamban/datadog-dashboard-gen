@@ -15,15 +15,13 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
 
 ## Example usage
 
-```
-datadog-dashboard-gen \
-  -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
-  -opsman_passwd=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
-  -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
-  -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
-  -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
-  -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>
-```
+        datadog-dashboard-gen \
+          -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
+          -opsman_passwd=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
+          -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
+          -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
+          -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
+          -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>
 
 ## Build & Run
 
@@ -38,14 +36,19 @@ datadog-dashboard-gen \
 
 1. Run program to upload the Stoplights dashboard
 
-        $GOPATH/bin/datadog-dashboard-gen -opsman_user=<OPSMAN_USER> -opsman_password=<OPSMAN_PASSWORD> -opsman_ip=<OPSMAN_IP> \
-        -ddapikey=<DATADOG_API_KEY> -ddappkey=<DATADOG_APP_KEY>
+        $GOPATH/bin/datadog-dashboard-gen \
+          -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
+          -opsman_passwd=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
+          -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
+          -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
+          -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
+          -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>
 
 ## Generate code from template
 
 1. Install [ego](https://github.com/benbjohnson/ego)
 
 1. Run `ego` (template is located under `templates/screen`)
-```bash
-ego -package datadog -o datadog/stoplights.go
-```
+
+        ego -package datadog -o datadog/stoplights.go
+
