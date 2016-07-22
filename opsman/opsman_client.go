@@ -5,40 +5,45 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cloudfoundry-incubator/uaa-go-client"
 	"github.com/pivotal-golang/lager"
 	http "github.com/pivotalservices/datadog-dashboard-gen/http"
 )
 
 // Client configures an opsman connection
 type Client struct {
+	opsmanVersion  string
 	opsmanIP       string
 	opsmanUsername string
 	opsmanPassword string
-	uaaClient      uaa_go_client.Client
+	uaaDomain      string
 	logger         lager.Logger
 }
 
 // New creates a new opsman Client
-func New(opsmanIP, opsmanUsername, opsmanPassword string, uaaClient uaa_go_client.Client, logger lager.Logger) *Client {
+func New(opsmanVersion, opsmanIP, opsmanUsername, opsmanPassword, uaaDomain string, logger lager.Logger) *Client {
 	return &Client{
+		opsmanVersion:  opsmanVersion,
 		opsmanIP:       opsmanIP,
 		opsmanUsername: opsmanUsername,
 		opsmanPassword: opsmanPassword,
-		uaaClient:      uaaClient,
+		uaaDomain:      uaaDomain,
 		logger:         logger,
 	}
 }
 
 // GetAPIVersion returns the Ops Man API version
 func (c *Client) GetAPIVersion() (string, error) {
-	forceUpdate := true
-	token, err := c.uaaClient.FetchToken(forceUpdate)
+
+	if c.opsmanVersion != "1.6" {
+		return "", fmt.Errorf("https://%s/api/api_version is no longer supported", c.opsmanIP)
+	}
+
+	token, err := c.fetchToken()
 	if err != nil {
 		return "", err
 	}
 	url := "https://" + c.opsmanIP + "/api/api_version"
-	resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token.AccessToken, "")
+	resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token, "")
 	if err != nil {
 		return "", err
 	}
@@ -65,14 +70,13 @@ func (c *Client) GetCFDeployment(installation *InstallationSettings, products []
 
 // GetInstallationSettings retrieves installation settings for cf deployment
 func (c *Client) GetInstallationSettings() (*InstallationSettings, error) {
-	forceUpdate := true
-	token, err := c.uaaClient.FetchToken(forceUpdate)
+	token, err := c.fetchToken()
 	if err != nil {
 		return nil, err
 	}
 	url := "https://" + c.opsmanIP + "/api/installation_settings/"
-	c.logger.Info("GetInstallationSettings", lager.Data{"url": url, "access_token": token.AccessToken, "opsmanUsername": c.opsmanUsername, "opsmanPassword": c.opsmanPassword})
-	resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token.AccessToken, "")
+	c.logger.Info("GetInstallationSettings", lager.Data{"url": url, "access_token": token, "opsmanUsername": c.opsmanUsername, "opsmanPassword": c.opsmanPassword})
+	resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token, "")
 	if err != nil {
 		return nil, err
 	}
@@ -92,14 +96,13 @@ func (c *Client) GetInstallationSettings() (*InstallationSettings, error) {
 
 // GetProducts returns all the products in an OpsMan installation
 func (c *Client) GetProducts() ([]Products, error) {
-	forceUpdate := true
-	token, err := c.uaaClient.FetchToken(forceUpdate)
+	token, err := c.fetchToken()
 	if err != nil {
 		return nil, err
 	}
 	url := "https://" + c.opsmanIP + "/api/installation_settings/products"
-	c.logger.Info("GetProducts", lager.Data{"url": url, "access_token": token.AccessToken, "opsmanUsername": c.opsmanUsername, "opsmanPassword": c.opsmanPassword})
-	resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token.AccessToken, "")
+	c.logger.Info("GetProducts", lager.Data{"url": url, "access_token": token, "opsmanUsername": c.opsmanUsername, "opsmanPassword": c.opsmanPassword})
+	resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token, "")
 	if err != nil {
 		return nil, err
 	}
@@ -124,4 +127,12 @@ func getProductGUID(products []Products, productType string) string {
 		}
 	}
 	return ""
+}
+
+func (c *Client) fetchToken() (string, error) {
+	var clientID = "opsman"
+	var clientSecret = ""
+	c.logger.Debug("oauthHTTPGet", lager.Data{"uaaDomain": "https://" + c.uaaDomain})
+
+	return http.GetToken("https://"+c.uaaDomain, c.opsmanUsername, c.opsmanPassword, clientID, clientSecret)
 }

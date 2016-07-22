@@ -10,9 +10,6 @@ import (
 
 	"github.com/pivotal-golang/lager"
 
-	"github.com/cloudfoundry-incubator/uaa-go-client"
-	uaa_config "github.com/cloudfoundry-incubator/uaa-go-client/config"
-	"github.com/pivotal-golang/clock"
 	"github.com/pivotalservices/datadog-dashboard-gen/datadog"
 	"github.com/pivotalservices/datadog-dashboard-gen/opsman"
 )
@@ -27,8 +24,7 @@ func main() {
 	useOpsMetrics := flag.Bool("use_ops_metrics", false, "Generate template from an PCF Ops Metrics deployment")
 	saveFile := flag.String("save_as", "", "Save generated dashboard on local disk")
 	uaaDomain := flag.String("uaa_domain", "", "UAA Domain")
-	uaaAdminClientUsername := flag.String("uaa_admin_client_username", "", "UAA Admin Client username")
-	uaaAdminClientSecret := flag.String("uaa_admin_client_secret", "", "UAA Admin Client secret")
+	version := flag.String("version", "1.7", "Ops Manager Version")
 
 	flag.Parse()
 
@@ -36,40 +32,38 @@ func main() {
 	outSink := lager.NewWriterSink(os.Stderr, lager.DEBUG)
 	logger.RegisterSink(outSink)
 
-	if uaaAdminClientUsername == nil || *uaaAdminClientUsername == "" {
-		log.Fatal("uaa_admin_client_username must be provided and not empty")
+	if opsmanUser == nil || *opsmanUser == "" {
+		log.Fatal("opsman_user must be provided and not empty")
 	}
 
-	// if uaaAdminClientSecret == nil || *uaaAdminClientSecret == "" {
-	// 	log.Fatal("uaaAdminClientSecret must be provided and not empty")
-	// }
+	if opsmanPassword == nil || *opsmanPassword == "" {
+		log.Fatal("opsman_password must be provided and not empty")
+	}
+
+	if opsmanIP == nil || *opsmanIP == "" {
+		log.Fatal("opsman_ip must be provided and not empty")
+	}
+
+	if ddAPIKey == nil || *ddAPIKey == "" {
+		log.Fatal("ddapikey must be provided and not empty")
+	}
+
+	if ddAppKey == nil || *ddAppKey == "" {
+		log.Fatal("ddappkey must be provided and not empty")
+	}
 
 	if uaaDomain == nil || *uaaDomain == "" {
 		log.Fatal("uaaDomain must be provided and not empty")
 	}
 
-	adminUaaConfig := &uaa_config.Config{
-		ClientName:       *uaaAdminClientUsername,
-		ClientSecret:     *uaaAdminClientSecret,
-		UaaEndpoint:      fmt.Sprintf("https://%s", *uaaDomain),
-		SkipVerification: true,
-	}
-
-	logger.Info("adminUAACONFIG:", lager.Data{"config": adminUaaConfig})
-
-	adminUaaClient, err := uaa_go_client.NewClient(logger, adminUaaConfig, clock.NewClock())
-	if err != nil {
-		logger.Fatal("Failed to generate a UAA client", err)
-	}
-
-	opsmanClient := opsman.New(*opsmanIP, *opsmanUser, *opsmanPassword, adminUaaClient, logger)
+	opsmanClient := opsman.New(*version, *opsmanIP, *opsmanUser, *opsmanPassword, *uaaDomain, logger)
 	logger.Info("opsmanClient:", lager.Data{"client": opsmanClient})
 
 	// Check we are using a supported Ops Man
-	// err = opsman.ValidateAPIVersion(opsmanClient)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	err := opsman.ValidateAPIVersion(opsmanClient)
+	if err != nil {
+		logger.Error("ValidateAPIVersion", err)
+	}
 
 	// Get installation settings from Ops Man foundation
 	installation, err := opsmanClient.GetInstallationSettings()

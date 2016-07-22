@@ -15,49 +15,11 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
 
 ## Example usage
 
-### Pre 1.7
 ```
 datadog-dashboard-gen \
   -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
   -opsman_passwd=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
   -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
-  -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
-  -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>
-```
-
-### Post 1.6
-Add a new Client to Ops Manager
-```
-uaac client add -i
-
-Client name:  datadog
-New client secret:  ******
-Verify new client secret:  secr3t
-scope (list):
-authorized grant types (list):  client_credentials
-authorities (list):  uaa.admin
-access token validity (seconds):
-refresh token validity (seconds):
-redirect uri (list):
-autoapprove (list):
-signup redirect url (url):
-  scope: uaa.none
-  client_id: datadog
-  resource_ids: none
-  authorized_grant_types: client_credentials
-  autoapprove:
-  action: none
-  authorities: opsman.admin
-  signup_redirect_url:
-  lastmodified: 1468622929593
-  id: datadog
-```
-
-```
-datadog-dashboard-gen \
-  -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
-  -uaa_admin_client_username=datadog \
-  -uaa_admin_client_secret=<REPLACE-WITH-CLIENT-SECRET> \
   -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
   -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
   -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>

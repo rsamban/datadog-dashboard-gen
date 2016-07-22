@@ -1,27 +1,12 @@
-hash: 28c306515c9e95186b6b4c2838e90e311c15d84567887de1de7cfa534ec7b5e6
-updated: 2016-07-15T15:09:40.055161-06:00
+hash: 05f73725f3820e1844d7bfb792b2e8646300c9b0bf24ad4d639d2ff83fed69ee
+updated: 2016-07-21T21:20:39.192189696-06:00
 imports:
-- name: code.cloudfoundry.org/lager
-  version: 62951a8009ab331bb21dc418074fa54e66eb9b6a
-- name: github.com/cloudfoundry-incubator/trace-logger
-  version: 24964ef4dbb527a373d4db141cbbd41eb21a56f9
-- name: github.com/cloudfoundry-incubator/uaa-go-client
-  version: a46e54d91191063ddc0d43b9b45b5ea4392d4066
-  subpackages:
-  - config
-  - schema
-- name: github.com/cloudfoundry/clock
-  version: da8295109ceb031ff96dc126bb68d75dd9fddc4b
 - name: github.com/cloudfoundry/lager
   version: 62951a8009ab331bb21dc418074fa54e66eb9b6a
-- name: github.com/dgrijalva/jwt-go
-  version: f62f64ea222e5e6d6d86421b5507b0862a3ebf7f
 - name: github.com/onsi/ginkgo
-  version: 2ed26afdbfa2fc4198937f1fa4ad943557f0c30e
+  version: eec95c97c201fc8a827acb31881847fc2aecdc5c
 - name: github.com/onsi/gomega
-  version: 2ed26afdbfa2fc4198937f1fa4ad943557f0c30e
-- name: github.com/pivotal-golang/clock
-  version: 3fd3c1944c59d9742e1cd333672181cd1a6f9fa0
+  version: eec95c97c201fc8a827acb31881847fc2aecdc5c
 - name: github.com/pivotal-golang/lager
   version: 7639e31ce6622c55c15aa64144b85d5f4873d127
 devImports: []
