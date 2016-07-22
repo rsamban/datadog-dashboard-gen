@@ -27,3 +27,4 @@ datadog-dashboard-gen
 # vendor
 ci/configs/secrets.yml
 .vagrant/
+.wercker/
