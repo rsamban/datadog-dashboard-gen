@@ -19,6 +19,7 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
           -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
           -opsman_password=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
           -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
+          -use_ops_metrics=true \
           -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
           -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
           -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>
@@ -40,6 +41,7 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
           -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
           -opsman_password=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
           -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
+          -use_ops_metrics=true \
           -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
           -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
           -ddappkey=<REPLACE-WITH-DATADOG-APP-KEY>
