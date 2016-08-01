@@ -33,7 +33,8 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
 1. Build binary
 
         cd datadog-dashboard-gen
-        go install
+        glide install
+        go build
 
 1. Run program to upload the Stoplights dashboard
 
