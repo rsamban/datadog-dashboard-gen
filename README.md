@@ -17,7 +17,7 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
 
         datadog-dashboard-gen \
           -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
-          -opsman_passwd=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
+          -opsman_password=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
           -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
           -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
           -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
@@ -38,7 +38,7 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
 
         $GOPATH/bin/datadog-dashboard-gen \
           -opsman_user=<REPLACE-WITH-OPS-MANAGER-USERNAME> \
-          -opsman_passwd=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
+          -opsman_password=<REPLACE-WITH-OPS-MANAGER-PASSWORD> \
           -opsman_ip=<REPLACE-WITH-OPS-MANAGER-IP> \
           -uaa_domain=<REPLACE-WITH-UAA-DOMAIN> \
           -ddapikey=<REPLACE-WITH-DATADOG-API-KEY> \
