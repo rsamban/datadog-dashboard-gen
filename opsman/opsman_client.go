@@ -34,9 +34,10 @@ func New(opsmanVersion, opsmanIP, opsmanUsername, opsmanPassword, uaaDomain stri
 // GetAPIVersion returns the Ops Man API version
 func (c *Client) GetAPIVersion() (string, error) {
 
-	if c.opsmanVersion != "1.6" {
-		return "", fmt.Errorf("https://%s/api/api_version is no longer supported", c.opsmanIP)
-	}
+	//TODO what exactly this API version meaning here. Ops Man 1.7 showing 2.0 version here
+	// if c.opsmanVersion != "1.6" {
+	// 	return "", fmt.Errorf("https://%s/api/api_version is no longer supported", c.opsmanIP)
+	// }
 
 	token, err := c.fetchToken()
 	if err != nil {
