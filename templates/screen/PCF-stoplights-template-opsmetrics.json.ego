@@ -381,8 +381,8 @@
   "template_variables": [
     {
       "default": "*",
-      "prefix": null,
-      "name": "var"
+      "prefix": "pcf-env",
+      "name": "pcf-env"
     }
   ],
   "templated": true,
@@ -390,7 +390,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) + <% } %><% } %>) *<%= 100/len(d.UaaJobs) %>",
+      "query": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) + <% } %><% } %>) *<%= 100/len(d.UaaJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -436,7 +436,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
+            "q": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -467,7 +467,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %> (avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+      "query": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %> (avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -513,7 +513,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+            "q": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -544,7 +544,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %> ",
+      "query": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -590,7 +590,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %> ",
+            "q": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -621,7 +621,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
+      "query": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -667,7 +667,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(<% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
+            "q": "(<% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -698,7 +698,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+      "query": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -744,7 +744,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+            "q": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -775,7 +775,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %>",
+      "query": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -821,7 +821,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %>",
+            "q": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -859,7 +859,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "(min:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf}by{ip})/0.000001024",
+            "q": "(min:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf}by{ip})/0.000001024",
             "conditional_formats": []
           }
         ],
@@ -880,7 +880,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(min:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf} by {ip}) / 0.000001024",
+      "query": "(min:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf} by {ip}) / 0.000001024",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -934,7 +934,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(min:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf} by {ip}) / 0.000001024",
+            "q": "(min:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf} by {ip}) / 0.000001024",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -973,7 +973,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf} ) / 0.000001024",
+      "query": "(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf} ) / 0.000001024",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1027,7 +1027,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf} ) / 0.000001024",
+            "q": "(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf} ) / 0.000001024",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1066,7 +1066,7 @@
     {
       "metric": "",
       "custom_unit": "/s",
-      "query": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.requests.cloud_controller{deployment:cf})",
+      "query": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.requests.cloud_controller{$pcf-env,deployment:cf})",
       "text_size": "auto",
       "title_size": 20,
       "title": true,
@@ -1120,7 +1120,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.requests.cloud_controller{deployment:cf})",
+            "q": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.requests.cloud_controller{$pcf-env,deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1159,7 +1159,7 @@
     {
       "metric": "",
       "custom_unit": "/s",
-      "query": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_requests{*})",
+      "query": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_requests{$pcf-env,*})",
       "text_size": "auto",
       "title_size": 20,
       "title": true,
@@ -1213,7 +1213,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_requests{*})",
+            "q": "per_second(sum:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_requests{$pcf-env,*})",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1259,12 +1259,12 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "sum:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.tasks_running{deployment:cf}",
+            "q": "sum:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.tasks_running{$pcf-env,deployment:cf}",
             "conditional_formats": [],
             "type": "line"
           },
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf}",
             "type": "line"
           }
         ],
@@ -1292,7 +1292,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "per_second(avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.bad_gateways{deployment:cf})",
+            "q": "per_second(avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.bad_gateways{$pcf-env,deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "line"
@@ -1322,7 +1322,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{deployment:<%= d.Release %>} by {job,index}",
+            "q": "max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{$pcf-env,deployment:<%= d.Release %>} by {job,index}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -1339,7 +1339,7 @@
     {
       "metric": "jmx.org.cloudfoundry.system.disk.ephemeral.percent",
       "custom_unit": "%",
-      "query": "max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{deployment:<%= d.Release %>}",
+      "query": "max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{$pcf-env,deployment:<%= d.Release %>}",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -1395,7 +1395,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{deployment:<%= d.Release %>}",
+            "q": "max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{$pcf-env,deployment:<%= d.Release %>}",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1434,7 +1434,7 @@
     {
       "metric": "jmx.org.cloudfoundry.system.disk.persistent.percent",
       "custom_unit": "%",
-      "query": "max:jmx.org.cloudfoundry.system.disk.persistent.percent{deployment:<%= d.Release %>}",
+      "query": "max:jmx.org.cloudfoundry.system.disk.persistent.percent{$pcf-env,deployment:<%= d.Release %>}",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -1490,7 +1490,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.system.disk.persistent.percent{deployment:<%= d.Release %>}",
+            "q": "max:jmx.org.cloudfoundry.system.disk.persistent.percent{$pcf-env,deployment:<%= d.Release %>}",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1616,7 +1616,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.system.disk.persistent.percent{deployment:<%= d.Release %>} by {job,index}",
+            "q": "max:jmx.org.cloudfoundry.system.disk.persistent.percent{$pcf-env,deployment:<%= d.Release %>} by {job,index}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -1640,7 +1640,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.system.cpu.user{deployment:<%= d.Release %>} by {job,index}",
+            "q": "max:jmx.org.cloudfoundry.system.cpu.user{$pcf-env,deployment:<%= d.Release %>} by {job,index}",
             "style": {
               "palette": "warm"
             },
@@ -1660,7 +1660,7 @@
     {
       "metric": "",
       "custom_unit": "/5m",
-      "query": "(((jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf} - jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_starting{deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.crashed_actual_lr_ps{deployment:cf})",
+      "query": "(((jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf} - jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_starting{$pcf-env,deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.crashed_actual_lr_ps{$pcf-env,deployment:cf})",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1714,7 +1714,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(((jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf} - jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_starting{deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.crashed_actual_lr_ps{deployment:cf})",
+            "q": "(((jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf} - jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_starting{$pcf-env,deployment:cf}) -jmx.org.cloudfoundry.opentsdb.nozzle.bbs.crashed_actual_lr_ps{$pcf-env,deployment:cf})",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1753,7 +1753,7 @@
     {
       "metric": "jmx.org.cloudfoundry.opentsdb.nozzle.bbs.domain.cf_apps",
       "custom_unit": "/5m",
-      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.domain.cf_apps{deployment:cf}",
+      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.domain.cf_apps{$pcf-env,deployment:cf}",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1809,7 +1809,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.domain.cf_apps{deployment:cf}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.domain.cf_apps{$pcf-env,deployment:cf}",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1848,7 +1848,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.nsync_bulker.desired_lrp_sync_duration{deployment:cf}/1000000000\n",
+      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.nsync_bulker.desired_lrp_sync_duration{$pcf-env,deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1902,7 +1902,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.nsync_bulker.desired_lrp_sync_duration{deployment:cf}/1000000000\n",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.nsync_bulker.desired_lrp_sync_duration{$pcf-env,deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1948,7 +1948,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_raft_term{deployment:cf}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_raft_term{$pcf-env,deployment:cf}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -1970,7 +1970,7 @@
     {
       "metric": "",
       "custom_unit": "/m",
-      "query": "per_minute(avg:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_failed{deployment:cf})",
+      "query": "per_minute(avg:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_failed{$pcf-env,deployment:cf})",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2026,7 +2026,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_minute(avg:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_failed{deployment:cf})",
+            "q": "per_minute(avg:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_failed{$pcf-env,deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2065,7 +2065,7 @@
     {
       "metric": "",
       "custom_unit": "/Hr",
-      "query": "per_hour(jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_started{deployment:cf})",
+      "query": "per_hour(jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_started{$pcf-env,deployment:cf})",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2103,7 +2103,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_hour(jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_started{deployment:cf})",
+            "q": "per_hour(jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_lrp_auctions_started{$pcf-env,deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2126,7 +2126,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_fetch_states_duration{deployment:cf}/1000000000",
+      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_fetch_states_duration{$pcf-env,deployment:cf}/1000000000",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2180,7 +2180,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_fetch_states_duration{deployment:cf}/1000000000",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.auctioneer.auctioneer_fetch_states_duration{$pcf-env,deployment:cf}/1000000000",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2226,13 +2226,13 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "<% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.user{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.sys{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:jmx.org.cloudfoundry.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>}<% } else { %>avg:jmx.org.cloudfoundry.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% } %>by {index}",
+            "q": "<% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.user{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.sys{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:jmx.org.cloudfoundry.system.cpu.wait{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}<% } else { %>avg:jmx.org.cloudfoundry.system.cpu.wait{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% } %>by {index}",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "area"
           },
           {
-          "q": "<% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.user{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.sys{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:jmx.org.cloudfoundry.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>}<% } else { %>avg:jmx.org.cloudfoundry.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% } %>by {index}",
+          "q": "<% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.user{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for _, routerJob := range d.RouterJobs { %>avg:jmx.org.cloudfoundry.system.cpu.sys{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:jmx.org.cloudfoundry.system.cpu.wait{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>}<% } else { %>avg:jmx.org.cloudfoundry.system.cpu.wait{$pcf-env,deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% } %>by {index}",
             "style": {
               "palette": "dog_classic"
             },
@@ -2251,7 +2251,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2297,7 +2297,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+            "q": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2328,7 +2328,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2374,7 +2374,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+            "q": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2405,7 +2405,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2451,7 +2451,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
+            "q": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2482,7 +2482,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
+      "query": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2528,7 +2528,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
+            "q": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2559,7 +2559,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+      "query": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2605,7 +2605,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+            "q": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2636,7 +2636,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+      "query": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2682,7 +2682,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+            "q": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2713,7 +2713,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}.rollup(avg,1800))",
+      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}.rollup(avg,1800))",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2767,7 +2767,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}.rollup(avg,1800))",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}.rollup(avg,1800))",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2806,7 +2806,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf}.rollup(avg,1800))",
+      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf}.rollup(avg,1800))",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2860,7 +2860,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{deployment:cf}.rollup(avg,1800))",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf}.rollup(avg,1800) - hour_before(jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_desired{$pcf-env,deployment:cf}.rollup(avg,1800))",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2899,7 +2899,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.request_latency{deployment:cf} / 1000000000",
+      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.request_latency{$pcf-env,deployment:cf} / 1000000000",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2953,7 +2953,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.request_latency{deployment:cf} / 1000000000",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.request_latency{$pcf-env,deployment:cf} / 1000000000",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2992,7 +2992,7 @@
     {
       "metric": "jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_watchers",
       "custom_unit": null,
-      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_watchers{deployment:cf}",
+      "query": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_watchers{$pcf-env,deployment:cf}",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3048,7 +3048,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_watchers{deployment:cf}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.etcd_watchers{$pcf-env,deployment:cf}",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -3087,7 +3087,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.route_emitter.route_emitter_sync_duration{deployment:cf}/1000000000\n",
+      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.route_emitter.route_emitter_sync_duration{$pcf-env,deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3141,7 +3141,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.route_emitter.route_emitter_sync_duration{deployment:cf}/1000000000\n",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.route_emitter.route_emitter_sync_duration{$pcf-env,deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -3180,7 +3180,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.convergence_lrp_duration{deployment:cf}/1000000000\n",
+      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.convergence_lrp_duration{$pcf-env,deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3234,7 +3234,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.convergence_lrp_duration{deployment:cf}/1000000000\n",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.convergence_lrp_duration{$pcf-env,deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -3273,7 +3273,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.rep.rep_bulk_sync_duration{deployment:cf}/1000000000\n",
+      "query": "max:jmx.org.cloudfoundry.opentsdb.nozzle.rep.rep_bulk_sync_duration{$pcf-env,deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3327,7 +3327,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.rep.rep_bulk_sync_duration{deployment:cf}/1000000000\n",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.rep.rep_bulk_sync_duration{$pcf-env,deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -3373,7 +3373,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{deployment:cf}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,deployment:cf}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -3420,7 +3420,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3466,7 +3466,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3499,7 +3499,7 @@
     {
       "metric": "system.load.1",
       "custom_unit": "%",
-      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3545,7 +3545,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3578,7 +3578,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3624,7 +3624,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3657,7 +3657,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3703,7 +3703,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3759,7 +3759,7 @@
         "viz": "toplist",
         "requests": [
           {
-            "q": "top(max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
+            "q": "top(max:jmx.org.cloudfoundry.system.disk.ephemeral.percent{$pcf-env,deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
             "style": {
               "palette": "dog_classic"
             },
@@ -3786,7 +3786,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_routes{*}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_routes{$pcf-env,*}",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "line"
@@ -3812,7 +3812,7 @@
         "viz": "toplist",
         "requests": [
           {
-            "q": "top(min:jmx.org.cloudfoundry.system.healthy{deployment:<%= d.Release %>} by {job}, 200, 'min', 'asc')",
+            "q": "top(min:jmx.org.cloudfoundry.system.healthy{$pcf-env,deployment:<%= d.Release %>} by {job}, 200, 'min', 'asc')",
             "style": {
               "palette": "dog_classic"
             },
@@ -3863,7 +3863,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{*} + max:cf.collector.hm9000.hm9000.number_of_running_instances{*})",
+      "query": "(max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,*} + max:cf.collector.hm9000.hm9000.number_of_running_instances{*})",
       "board_id": 52443,
       "title_size": 13,
       "title": true,
@@ -3911,7 +3911,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{*}",
+            "q": "max:jmx.org.cloudfoundry.opentsdb.nozzle.bbs.lr_ps_running{$pcf-env,*}",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -3972,27 +3972,6 @@
       "title_text": "",
       "height": 5,
       "bgcolor": "white",
-      "html": "System DB Job Health",
-      "y": 27,
-      "x": 134,
-      "font_size": "18",
-      "tick": false,
-      "type": "note",
-      "width": 24,
-      "auto_refresh": false
-    },
-    {
-      "board_id": 52443,
-      "title_size": 16,
-      "title": true,
-      "refresh_every": 30000,
-      "tick_pos": "50%",
-      "title_align": "left",
-      "tick_edge": "left",
-      "text_align": "center",
-      "title_text": "",
-      "height": 5,
-      "bgcolor": "white",
       "html": "ERT VM Vitals",
       "y": 45,
       "x": 134,
@@ -4005,7 +3984,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(((sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_total_memory{deployment:cf}) -(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf})) / 0.000001024 ) + (sum:cf.collector.mem_used_bytes{job:dea})",
+      "query": "(((sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_total_memory{$pcf-env,deployment:cf}) -(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf})) / 0.000001024 ) + (sum:cf.collector.mem_used_bytes{job:dea})",
       "board_id": 52443,
       "title_size": 13,
       "title": true,
@@ -4045,7 +4024,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(((sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_total_memory{deployment:cf})-(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{deployment:cf}))/0.000001024)",
+            "q": "(((sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_total_memory{$pcf-env,deployment:cf})-(sum:jmx.org.cloudfoundry.opentsdb.nozzle.rep.capacity_remaining_memory{$pcf-env,deployment:cf}))/0.000001024)",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -4076,7 +4055,7 @@
         "viz": "toplist",
         "requests": [
           {
-            "q": "top(max:jmx.org.cloudfoundry.system.cpu.user{deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
+            "q": "top(max:jmx.org.cloudfoundry.system.cpu.user{$pcf-env,deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
             "style": {
               "palette": "dog_classic"
             },
@@ -4095,7 +4074,7 @@
     {
       "metric": "jmx.org.cloudfoundry.system.cpu.user",
       "custom_unit": "%",
-      "query": "max:jmx.org.cloudfoundry.system.cpu.user{deployment:<%= d.Release %>}",
+      "query": "max:jmx.org.cloudfoundry.system.cpu.user{$pcf-env,deployment:<%= d.Release %>}",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -4151,7 +4130,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:jmx.org.cloudfoundry.system.cpu.user{deployment:<%= d.Release %>}",
+            "q": "max:jmx.org.cloudfoundry.system.cpu.user{$pcf-env,deployment:<%= d.Release %>}",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -4189,49 +4168,6 @@
     },
     {
       "board_id": 52443,
-      "autoscale": true,
-      "title_size": 16,
-      "title": true,
-      "title_align": "left",
-      "title_text": "Failed Stages per/min (past 30 Min)",
-      "height": 6,
-      "tile_def": {
-        "viz": "query_value",
-        "requests": [
-          {
-            "q": "per_minute(max:jmx.org.cloudfoundry.opentsdb.nozzle.stager.staging_requests_failed{deployment:cf})",
-            "aggregator": "max",
-            "conditional_formats": [
-              {
-                "palette": "white_on_red",
-                "value": 5,
-                "comparator": ">"
-              },
-              {
-                "palette": "white_on_yellow",
-                "value": 1,
-                "comparator": ">="
-              },
-              {
-                "palette": "white_on_green",
-                "value": 0,
-                "comparator": "<"
-              }
-            ]
-          }
-        ],
-        "precision": "0"
-      },
-      "width": 30,
-      "timeframe": "30m",
-      "y": 32,
-      "x": 103,
-      "legend_size": "0",
-      "type": "query_value",
-      "legend": false
-    },
-    {
-      "board_id": 52443,
       "title_size": 16,
       "title": true,
       "refresh_every": 30000,
@@ -4262,11 +4198,11 @@
         "viz": "timeseries",
         "requests": [<% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.latency{deployment:cf,job:<%= routerJob %>}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.latency{$pcf-env,deployment:cf,job:<%= routerJob %>}",
             "type": "line"
           }<% } else { %>
           {
-            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.latency{deployment:cf,job:<%= routerJob %>}",
+            "q": "avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.latency{$pcf-env,deployment:cf,job:<%= routerJob %>}",
             "type": "line"
           },<% } %><% } %>
         ],
@@ -4298,7 +4234,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "per_second(avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_requests{deployment:cf})",
+            "q": "per_second(avg:jmx.org.cloudfoundry.opentsdb.nozzle.gorouter.total_requests{$pcf-env,deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "line"
