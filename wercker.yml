@@ -18,7 +18,7 @@ build:
           go get github.com/Masterminds/glide
           export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
           glide --version
-          # glide install
+          glide install
 
     # Test the project
     - script:
