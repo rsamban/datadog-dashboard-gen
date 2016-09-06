@@ -1,12 +1,14 @@
-hash: 05f73725f3820e1844d7bfb792b2e8646300c9b0bf24ad4d639d2ff83fed69ee
-updated: 2016-07-21T21:20:39.192189696-06:00
+hash: 1fc0d791b2c85754e41feefb67d5f0b84db21be859caa0a2eedd885ae36f2729
+updated: 2016-09-06T11:21:09.247619392-06:00
 imports:
 - name: github.com/cloudfoundry/lager
   version: 62951a8009ab331bb21dc418074fa54e66eb9b6a
 - name: github.com/onsi/ginkgo
-  version: eec95c97c201fc8a827acb31881847fc2aecdc5c
+  version: 7b6efc7d7b052568b49ac02d3141c9d7a5a494a4
 - name: github.com/onsi/gomega
-  version: eec95c97c201fc8a827acb31881847fc2aecdc5c
+  version: b48c9a8b2644326d0a44eaaacc8d83e35174a05d
 - name: github.com/pivotal-golang/lager
-  version: 7639e31ce6622c55c15aa64144b85d5f4873d127
+  version: 62951a8009ab331bb21dc418074fa54e66eb9b6a
+- name: gopkg.in/yaml.v2
+  version: e4d366fc3c7938e2958e662b4258c7a89e1f0e3e
 devImports: []
