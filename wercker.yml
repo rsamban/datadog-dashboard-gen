@@ -17,21 +17,27 @@ build:
           go version
           go get github.com/Masterminds/glide
           export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
-          glide install
+          glide --version
+          # glide install
 
     # Test the project
     - script:
         name: go test
         code: |
-          go test $(glide novendor) -v -race
+          LOG_LEVEL=debug go test $(glide novendor) -v -cover -race
 
-    # Setting the coverage watermark low.
-    # This should be raised as we gain more coverage...
-    # Test coverage for the project
     - script:
-        name: go test cover
+        name: set release id variable for version
         code: |
-          ./testCoverage $(glide novendor) $COVERAGE_WATERMARK
+          go get github.com/xchapter7x/versioning
+          export WERCKER_GITHUB_CREATE_RELEASE_ID=`versioning bump_patch`
+
+    - script:
+        name: compile for all platforms
+        code: |
+          GOOS=darwin go build -o datadog-dashboard-gen-osx -ldflags "-X main.Version=${WERCKER_GITHUB_CREATE_RELEASE_ID}-`git rev-parse HEAD | cut -c1-6`" main.go
+          GOOS=linux go build -o datadog-dashboard-gen-linux -ldflags "-X main.Version=${WERCKER_GITHUB_CREATE_RELEASE_ID}-`git rev-parse HEAD | cut -c1-6`" main.go
+          GOOS=windows go build -o datadog-dashboard-gen-win -ldflags "-X main.Version=${WERCKER_GITHUB_CREATE_RELEASE_ID}-`git rev-parse HEAD | cut -c1-6`" main.go
 
     - script:
         name: add repo to artifact

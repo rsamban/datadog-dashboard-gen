@@ -1,10 +1,10 @@
-
-# Check if images are available locally
-DOCKER_LOCAL=""
-if [[ $(docker images|grep redis) && $(docker images|grep mongo) && $(docker images|grep golang) ]]; then
-  echo "Using previously cached docker images"
-  DOCKER_LOCAL="--docker-local"
+rm -fR _builds _steps _projects
+isinit=$1
+local="--docker-local"
+echo $isinit
+if [[ "$isinit" == "init" ]]; then
+    echo "pulling latest docker containers"
+    local=""
 fi
-rm -fR _builds _steps _projects _cache _temp
-wercker --verbose --environment ".testrunner_env_defaults" build --git-domain github.com --git-owner pivotalservices --git-repository datadog-dashboard-gen ${DOCKER_LOCAL}
-rm -fR _builds _steps _projects _cache _temp
+wercker --verbose --environment ".testrunner_env_defaults" build --git-domain github.com --git-owner pivotalservices --git-repository datadog-dashboard-gen ${local}
+rm -fR _builds _steps _projects

@@ -55,3 +55,10 @@ This is a command line utility that can be used to deploy a MVP "StopLights" Das
 
         ego -package datadog -o datadog/stoplights.go
 
+## Wercker
+
+1. Run build pipeline manually
+
+  ```console
+  $ ./testrunner init
+  ```
