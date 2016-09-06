@@ -1,5 +1,7 @@
 ## Datadog Dashboard Generator
 
+[![wercker status](https://app.wercker.com/status/50db510a35a5626edb8795cd6c131915/s/master "wercker status")](https://app.wercker.com/project/byKey/50db510a35a5626edb8795cd6c131915)
+
 This is a command line utility that can be used to deploy a MVP "StopLights" Dashboard to a given Users Datadog Subscription from a template.
 
 ## Logical Flow
