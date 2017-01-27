@@ -1,7 +1,7 @@
-<%! func StopLightsTemplate(w io.Writer, d *opsman.Deployment) error %>
-<%% import "github.com/pivotalservices/datadog-dashboard-gen/opsman" %%>
+<%! func StopLightsTemplate(w io.Writer, d *opsman.Deployment, metricPrefix string, dashboardTitle string) error %>
+<%% import "github.com/rsamban/datadog-dashboard-gen/opsman" %%>
 {
-  "board_title": "PCF Stoplights",
+  "board_title": "<%= dashboardTitle %>",
   "board_bgtype": "board_graph",
   "created": "2016-03-08T15:37:38.683101+00:00",
   "canonical_units": {
@@ -390,7 +390,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) + <% } %><% } %>) *<%= 100/len(d.UaaJobs) %>",
+      "query": "( <% for i, _ := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100 / <%= len(d.UaaJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -436,7 +436,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
+            "q": "( <% for i, _ := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100 / <%= len(d.UaaJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -467,7 +467,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %> (avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+      "query": "( <% for i, _ := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -513,7 +513,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+            "q": "( <% for i, _ := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -544,7 +544,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %> ",
+      "query": "( <% for i, _ := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,ip:<%= i %>}}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy:<%= d.Release %>,job:router,id:<%= i %>}}.rollup(avg,60)) + <% } %><% } %>) * 100 / <%= len(d.RouterJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -590,7 +590,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %> ",
+            "q": "( <% for i, _ := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100/<%= len(d.RouterJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -621,7 +621,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
+      "query": "( <% for i, _ := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100 / <%= len(d.UaaJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -667,7 +667,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(<% for i, uaaJob := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaJobs) %>",
+            "q": "( <% for i, _ := range d.UaaJobs { %><% if i == len(d.UaaJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:uaa,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100 / <%= len(d.UaaJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -698,7 +698,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs ) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+      "query": "( <% for i, _ := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -744,7 +744,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccJob := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs ) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccJob %>}.rollup(avg,60)) +\n<% } %><% } %>\n) *<%= 100/len(d.CloudControllerJobs) %>",
+            "q": "( <% for i, _ := range d.CloudControllerJobs { %><% if i == len(d.CloudControllerJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:cloud_controller,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -775,7 +775,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %>",
+      "query": "( <% for i, _ := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100/<%= len(d.RouterJobs) %> ",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -821,7 +821,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= routerJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.RouterJobs) %>",
+            "q": "( <% for i, _ := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:router,index:<%= i %>}.rollup(avg,60)) + <% } %><% } %>) * 100/<%= len(d.RouterJobs) %> ",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -859,7 +859,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "(min:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf}by{ip})/0.000001024",
+            "q": "(min:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf}by{ip})/0.000001024",
             "conditional_formats": []
           }
         ],
@@ -880,7 +880,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(min:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf} by {ip}) / 0.000001024",
+      "query": "(min:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf} by {ip}) / 0.000001024",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -934,7 +934,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(min:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf} by {ip}) / 0.000001024",
+            "q": "(min:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf} by {ip}) / 0.000001024",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -973,7 +973,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(sum:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf} ) / 0.000001024",
+      "query": "(sum:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf} ) / 0.000001024",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1027,7 +1027,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(sum:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf} ) / 0.000001024",
+            "q": "(sum:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf} ) / 0.000001024",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1066,7 +1066,7 @@
     {
       "metric": "",
       "custom_unit": "/s",
-      "query": "per_second(sum:datadog.nozzle.router__0.requests.CloudController{deployment:cf})",
+      "query": "per_minute(avg:<%= metricPrefix %>MetronAgent.dropsondeUnmarshaller.httpStartStopReceived{deployment:cf,job:cloud_controller}) * 5",
       "text_size": "auto",
       "title_size": 20,
       "title": true,
@@ -1120,7 +1120,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_second(sum:datadog.nozzle.router__0.requests.CloudController{deployment:cf})",
+            "q": "per_minute(avg:<%= metricPrefix %>MetronAgent.dropsondeUnmarshaller.httpStartStopReceived{deployment:cf,job:cloud_controller}) * 5",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1159,7 +1159,7 @@
     {
       "metric": "",
       "custom_unit": "/s",
-      "query": "per_second(sum:datadog.nozzle.router__0.total_requests{*})",
+      "query": "per_minute(avg:<%= metricPrefix %>MetronAgent.dropsondeUnmarshaller.httpStartStopReceived{deployment:cf,job:router}) * 5",
       "text_size": "auto",
       "title_size": 20,
       "title": true,
@@ -1213,7 +1213,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_second(sum:datadog.nozzle.router__0.total_requests{*})",
+            "q": "per_minute(avg:<%= metricPrefix %>MetronAgent.dropsondeUnmarshaller.httpStartStopReceived{deployment:cf,job:router}) * 5",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1259,12 +1259,12 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "sum:datadog.nozzle.bbs.TasksRunning{deployment:cf}",
+            "q": "sum:<%= metricPrefix %>bbs.TasksRunning{deployment:cf}",
             "conditional_formats": [],
             "type": "line"
           },
           {
-            "q": "avg:datadog.nozzle.bbs.LRPsDesired{deployment:cf}",
+            "q": "avg:<%= metricPrefix %>bbs.LRPsDesired{deployment:cf}",
             "type": "line"
           }
         ],
@@ -1292,7 +1292,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "per_second(avg:datadog.nozzle.router__0.bad_gateways{deployment:cf})",
+            "q": "per_second(avg:<%= metricPrefix %>gorouter.bad_gateways{deployment:cf,job:router})",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "line"
@@ -1322,7 +1322,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "max:bosh.healthmonitor.system.disk.ephemeral.percent{deployment:<%= d.Release %>} by {job,index}",
+            "q": "max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.ephemeral.percent{deployment:<%= d.Release %>} by {job,index}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -1330,23 +1330,23 @@
       },
       "width": 24,
       "timeframe": "1h",
-      "y": 64,
-      "x": 134,
+      "y": 94,
+      "x": 55,
       "legend_size": "0",
       "type": "timeseries",
       "legend": false
     },
     {
-      "metric": "bosh.healthmonitor.system.disk.ephemeral.percent",
+      "metric": "<%= metricPrefix %>bosh_hm_forwarder.system.disk.ephemeral.percent",
       "custom_unit": "%",
-      "query": "max:bosh.healthmonitor.system.disk.ephemeral.percent{deployment:<%= d.Release %>}",
+      "query": "max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.ephemeral.percent{deployment:<%= d.Release %>}",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
       "aggregator": "max",
       "title_align": "left",
       "text_align": "center",
-      "width": 23,
+      "width": 30,
       "timeframe": "1h",
       "wrapped": true,
       "type": "query_value",
@@ -1356,7 +1356,7 @@
       "precision": 0,
       "title_text": "Top Ephemeral Disk usage (%) past hour",
       "padding": 8,
-      "x": 158,
+      "x": 80,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -1395,7 +1395,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:bosh.healthmonitor.system.disk.ephemeral.percent{deployment:<%= d.Release %>}",
+            "q": "max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.ephemeral.percent{deployment:<%= d.Release %>}",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1428,13 +1428,13 @@
       },
       "res_calc_func": "raw",
       "aggr": "max",
-      "y": 50,
+      "y": 80,
       "calc_func": "raw"
     },
     {
-      "metric": "bosh.healthmonitor.system.disk.persistent.percent",
+      "metric": "<%= metricPrefix %>bosh_hm_forwarder.system.disk.persistent.percent",
       "custom_unit": "%",
-      "query": "max:bosh.healthmonitor.system.disk.persistent.percent{deployment:<%= d.Release %>}",
+      "query": "max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.persistent.percent{deployment:<%= d.Release %>}",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -1451,7 +1451,7 @@
       "precision": 0,
       "title_text": "Top Persistent Disk usage (%) past hour",
       "padding": 8,
-      "x": 181,
+      "x": 103,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -1490,7 +1490,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:bosh.healthmonitor.system.disk.persistent.percent{deployment:<%= d.Release %>}",
+            "q": "max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.persistent.percent{deployment:<%= d.Release %>}",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1523,7 +1523,7 @@
       },
       "res_calc_func": "raw",
       "aggr": "max",
-      "y": 50,
+      "y": 80,
       "calc_func": "raw"
     },
     {
@@ -1537,7 +1537,7 @@
       "title_text": "",
       "height": 7,
       "bgcolor": "blue",
-      "html": "[PCF Elastic RunTime](/dash/dash/90958)",
+      "html": "PCF Elastic RunTime",
       "y": 0,
       "x": 55,
       "font_size": "36",
@@ -1557,7 +1557,7 @@
       "title_text": "",
       "height": 6,
       "bgcolor": "white",
-      "html": "[API/CC](/dash/dash/90943)",
+      "html": "API/CC",
       "y": 13,
       "x": 0,
       "font_size": "24",
@@ -1574,10 +1574,10 @@
       "title_align": "left",
       "tick_edge": "left",
       "text_align": "center",
-      "title_text": "",
+      "title_text": "UAA",
+      "html": "UAA",
       "height": 5.916666666666667,
       "bgcolor": "white",
-      "html": "[UAA](/dash/dash/90946)",
       "y": 19,
       "x": 0,
       "font_size": "24",
@@ -1594,10 +1594,10 @@
       "title_align": "left",
       "tick_edge": "left",
       "text_align": "center",
-      "title_text": "",
+      "title_text": "Router",
+      "html": "Router",
       "height": 6,
       "bgcolor": "white",
-      "html": "[Router](/dash/dash/90946)",
       "y": 6.744791666666667,
       "x": -3.9736429998290155e-8,
       "font_size": "24",
@@ -1616,7 +1616,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "max:bosh.healthmonitor.system.disk.persistent.percent{deployment:<%= d.Release %>} by {job,index}",
+            "q": "max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.persistent.percent{deployment:<%= d.Release %>} by {job,index}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -1624,8 +1624,8 @@
       },
       "width": 24,
       "timeframe": "1h",
-      "y": 50,
-      "x": 134,
+      "y": 80,
+      "x": 55,
       "legend_size": "0",
       "type": "timeseries",
       "legend": false
@@ -1640,7 +1640,7 @@
         "viz": "heatmap",
         "requests": [
           {
-            "q": "max:bosh.healthmonitor.system.cpu.user{deployment:<%= d.Release %>} by {job,index}",
+            "q": "max:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user{deployment:<%= d.Release %>} by {job,index}",
             "style": {
               "palette": "warm"
             },
@@ -1651,8 +1651,8 @@
       },
       "width": 24,
       "timeframe": "1h",
-      "y": 84,
-      "x": 134,
+      "y": 108,
+      "x": 55,
       "legend_size": "0",
       "type": "timeseries",
       "legend": false
@@ -1660,7 +1660,7 @@
     {
       "metric": "",
       "custom_unit": "/5m",
-      "query": "(((datadog.nozzle.bbs.LRPsDesired{deployment:cf} - datadog.nozzle.bbs.LRPsRunning{deployment:cf}) -datadog.nozzle.bbs.LRPsStarting{deployment:cf}) -datadog.nozzle.bbs.CrashedActualLRPs{deployment:cf})",
+      "query": "(((<%= metricPrefix %>bbs.LRPsDesired{deployment:cf} - <%= metricPrefix %>bbs.LRPsRunning{deployment:cf}) -<%= metricPrefix %>bbs.LRPsStarting{deployment:cf}) -<%= metricPrefix %>bbs.CrashedActualLRPs{deployment:cf})",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1714,7 +1714,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(((datadog.nozzle.bbs.LRPsDesired{deployment:cf} - datadog.nozzle.bbs.LRPsRunning{deployment:cf}) -datadog.nozzle.bbs.LRPsStarting{deployment:cf}) -datadog.nozzle.bbs.CrashedActualLRPs{deployment:cf})",
+            "q": "(((<%= metricPrefix %>bbs.LRPsDesired{deployment:cf} - <%= metricPrefix %>bbs.LRPsRunning{deployment:cf}) -<%= metricPrefix %>bbs.LRPsStarting{deployment:cf}) -<%= metricPrefix %>bbs.CrashedActualLRPs{deployment:cf})",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1751,9 +1751,9 @@
       "calc_func": "raw"
     },
     {
-      "metric": "datadog.nozzle.bbs.Domain.cf_apps",
+      "metric": "<%= metricPrefix %>bbs.Domain.cf_apps",
       "custom_unit": "/5m",
-      "query": "avg:datadog.nozzle.bbs.Domain.cf_apps{deployment:cf}",
+      "query": "avg:<%= metricPrefix %>bbs.Domain.cf_apps{deployment:cf}",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1767,7 +1767,7 @@
       "tags": [
         "deployment:cf"
       ],
-      "precision": "*",
+      "precision": "2",
       "title_text": "Domain 'cf-apps' Freshness - 5m avg",
       "padding": 8,
       "x": 55,
@@ -1793,7 +1793,7 @@
         },
         {
           "palette": "white_on_green",
-          "comparator": ">=",
+          "comparator": ">",
           "invert": false,
           "value": 0.9,
           "custom_bg_color": null,
@@ -1805,11 +1805,11 @@
         "text_align": "center",
         "autoscale": false,
         "custom_unit": "/5m",
-        "precision": "*",
+        "precision": "2",
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.bbs.Domain.cf_apps{deployment:cf}",
+            "q": "avg:<%= metricPrefix %>bbs.Domain.cf_apps{deployment:cf}",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -1830,7 +1830,7 @@
               },
               {
                 "palette": "white_on_green",
-                "comparator": ">=",
+                "comparator": ">",
                 "invert": false,
                 "value": 0.9,
                 "custom_bg_color": null,
@@ -1848,7 +1848,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:datadog.nozzle.nsync_bulker.DesiredLRPSyncDuration{deployment:cf}/1000000000\n",
+      "query": "max:<%= metricPrefix %>nsync_bulker.DesiredLRPSyncDuration{deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -1902,7 +1902,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.nsync_bulker.DesiredLRPSyncDuration{deployment:cf}/1000000000\n",
+            "q": "max:<%= metricPrefix %>nsync_bulker.DesiredLRPSyncDuration{deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -1948,7 +1948,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.bbs.ETCDRaftTerm{deployment:cf}",
+            "q": "avg:<%= metricPrefix %>bbs.ETCDRaftTerm{deployment:cf}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -1970,7 +1970,7 @@
     {
       "metric": "",
       "custom_unit": "/m",
-      "query": "per_minute(avg:datadog.nozzle.auctioneer.AuctioneerLRPAuctionsFailed{deployment:cf})",
+      "query": "per_minute(avg:<%= metricPrefix %>auctioneer.AuctioneerLRPAuctionsFailed{deployment:cf})",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2026,7 +2026,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_minute(avg:datadog.nozzle.auctioneer.AuctioneerLRPAuctionsFailed{deployment:cf})",
+            "q": "per_minute(avg:<%= metricPrefix %>auctioneer.AuctioneerLRPAuctionsFailed{deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2065,7 +2065,7 @@
     {
       "metric": "",
       "custom_unit": "/Hr",
-      "query": "per_hour(datadog.nozzle.auctioneer.AuctioneerLRPAuctionsStarted{deployment:cf})",
+      "query": "per_hour(<%= metricPrefix %>auctioneer.AuctioneerLRPAuctionsStarted{deployment:cf})",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2103,7 +2103,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_hour(datadog.nozzle.auctioneer.AuctioneerLRPAuctionsStarted{deployment:cf})",
+            "q": "per_hour(<%= metricPrefix %>auctioneer.AuctioneerLRPAuctionsStarted{deployment:cf})",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2126,7 +2126,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:datadog.nozzle.auctioneer.AuctioneerFetchStatesDuration{deployment:cf}/1000000000",
+      "query": "max:<%= metricPrefix %>auctioneer.AuctioneerFetchStatesDuration{deployment:cf}/1000000000",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2180,7 +2180,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.auctioneer.AuctioneerFetchStatesDuration{deployment:cf}/1000000000",
+            "q": "max:<%= metricPrefix %>auctioneer.AuctioneerFetchStatesDuration{deployment:cf}/1000000000",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2226,19 +2226,19 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "<% for _, routerJob := range d.RouterJobs { %>avg:bosh.healthmonitor.system.cpu.user{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for _, routerJob := range d.RouterJobs { %>avg:bosh.healthmonitor.system.cpu.sys{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:bosh.healthmonitor.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>}<% } else { %>avg:bosh.healthmonitor.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% } %>by {index}",
+            "q": "<% for range d.RouterJobs { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user{deployment:<%= d.Release %>,job:router} +<% } %><% for range d.RouterJobs { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.sys{deployment:<%= d.Release %>,job:router} +<% } %><% for i, _ := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.wait{deployment:<%= d.Release %>,job:router}<% } else { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.wait{deployment:<%= d.Release %>,job:router} +<% } %><% } %>by {index}",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "area"
-          },
-          {
-          "q": "<% for _, routerJob := range d.RouterJobs { %>avg:bosh.healthmonitor.system.cpu.user{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for _, routerJob := range d.RouterJobs { %>avg:bosh.healthmonitor.system.cpu.sys{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:bosh.healthmonitor.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>}<% } else { %>avg:bosh.healthmonitor.system.cpu.wait{deployment:<%= d.Release %>,job:<%= routerJob %>} +<% } %><% } %>by {index}",
-            "style": {
-              "palette": "dog_classic"
-            },
-            "type": "line"
+           },
+           {
+              "q": "<% for range d.RouterJobs { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user{deployment:<%= d.Release %>,job:router} +<% } %><% for range d.RouterJobs { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.sys{deployment:<%= d.Release %>,job:router} +<% } %><% for i, _ := range d.RouterJobs { %><% if i == len(d.RouterJobs ) - 1 { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.wait{deployment:<%= d.Release %>,job:router}<% } else { %>avg:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.wait{deployment:<%= d.Release %>,job:router} +<% } %><% } %>by {index}",
+              "style": {
+                "palette": "dog_classic"
+              },
+              "type": "line"
           }
-        ]
+          ]
       },
       "width": 54,
       "timeframe": "1h",
@@ -2251,7 +2251,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+      "query": "( <% for i, _ := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoBrainJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2266,7 +2266,7 @@
       "precision": 0,
       "title_text": "Brain - 5m",
       "padding": 8,
-      "x": 134,
+      "x": 1,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -2297,7 +2297,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+            "q": "( <% for i, _ := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoBrainJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2322,20 +2322,20 @@
       },
       "res_calc_func": "raw",
       "aggr": "avg",
-      "y": 7,
+      "y": 105,
       "calc_func": "raw"
     },
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+      "query": "( <% for i, _ := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoBrainJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
       "aggregator": "min",
       "title_align": "center",
       "text_align": "center",
-      "width": 10,
+      "width": 12,
       "timeframe": "1d",
       "wrapped": true,
       "type": "query_value",
@@ -2343,7 +2343,7 @@
       "precision": 0,
       "title_text": "Brain - 24h",
       "padding": 8,
-      "x": 148,
+      "x": 15,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -2374,7 +2374,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+            "q": "( <% for i, _ := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_brain,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoBrainJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2399,13 +2399,13 @@
       },
       "res_calc_func": "raw",
       "aggr": "avg",
-      "y": 7,
+      "y": 105,
       "calc_func": "raw"
     },
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoBrainJob := range d.DiegoBrainJobs { %><% if i == len(d.DiegoBrainJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoBrainJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoBrainJobs) %>",
+      "query": "( <% for i, _ := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>* 100 / <%= len(d.DiegoCellJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2420,7 +2420,7 @@
       "precision": 0,
       "title_text": "Cell - 5m",
       "padding": 8,
-      "x": 134,
+      "x": 1,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -2451,7 +2451,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
+            "q": "( <% for i, _ := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>* 100 / <%= len(d.DiegoCellJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2476,20 +2476,20 @@
       },
       "res_calc_func": "raw",
       "aggr": "avg",
-      "y": 13,
+      "y": 111,
       "calc_func": "raw"
     },
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
+      "query": "( <% for i, _ := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>* 100 / <%= len(d.DiegoCellJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
       "aggregator": "min",
       "title_align": "center",
       "text_align": "center",
-      "width": 10,
+      "width": 12,
       "timeframe": "1d",
       "wrapped": true,
       "type": "query_value",
@@ -2497,7 +2497,7 @@
       "precision": 0,
       "title_text": "Cell - 24h",
       "padding": 8,
-      "x": 148,
+      "x": 15,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -2528,7 +2528,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoCellJob := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoCellJob %>}.rollup(avg,60)) +<% } %><% } %>* <%= 100/len(d.DiegoCellJobs) %>",
+            "q": "( <% for i, _ := range d.DiegoCellJobs { %><% if i == len(d.DiegoCellJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_cell,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>* 100 / <%= len(d.DiegoCellJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2553,13 +2553,13 @@
       },
       "res_calc_func": "raw",
       "aggr": "avg",
-      "y": 13,
+      "y": 111,
       "calc_func": "raw"
     },
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+      "query": "( <% for i, _ := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoDatabaseJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -2574,7 +2574,7 @@
       "precision": 0,
       "title_text": "BBS - 5m",
       "padding": 8,
-      "x": 134,
+      "x": 1,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -2605,7 +2605,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+            "q": "( <% for i, _ := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2630,20 +2630,20 @@
       },
       "res_calc_func": "raw",
       "aggr": "avg",
-      "y": 19,
+      "y": 117,
       "calc_func": "raw"
     },
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+      "query": "( <% for i, _ := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoDatabaseJobs) %>",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
       "aggregator": "min",
       "title_align": "center",
       "text_align": "center",
-      "width": 10,
+      "width": 12,
       "timeframe": "1d",
       "wrapped": true,
       "type": "query_value",
@@ -2651,7 +2651,7 @@
       "precision": 0,
       "title_text": "BBS - 24h",
       "padding": 8,
-      "x": 148,
+      "x": 15,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -2682,7 +2682,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, diegoDatabaseJob := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= diegoDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.DiegoDatabaseJobs) %>",
+            "q": "( <% for i, _ := range d.DiegoDatabaseJobs { %><% if i == len(d.DiegoDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:diego_database,index:<%= i %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.DiegoDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -2707,13 +2707,13 @@
       },
       "res_calc_func": "raw",
       "aggr": "avg",
-      "y": 19,
+      "y": 117,
       "calc_func": "raw"
     },
     {
       "metric": "",
       "custom_unit": null,
-      "query": "avg:datadog.nozzle.bbs.LRPsRunning{deployment:cf}.rollup(avg,1800) - hour_before(datadog.nozzle.bbs.LRPsRunning{deployment:cf}.rollup(avg,1800))",
+      "query": "avg:<%= metricPrefix %>bbs.LRPsRunning{deployment:cf}.rollup(avg,1800) - hour_before(<%= metricPrefix %>bbs.LRPsRunning{deployment:cf}.rollup(avg,1800))",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2767,7 +2767,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.bbs.LRPsRunning{deployment:cf}.rollup(avg,1800) - hour_before(datadog.nozzle.bbs.LRPsRunning{deployment:cf}.rollup(avg,1800))",
+            "q": "avg:<%= metricPrefix %>bbs.LRPsRunning{deployment:cf}.rollup(avg,1800) - hour_before(<%= metricPrefix %>bbs.LRPsRunning{deployment:cf}.rollup(avg,1800))",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2806,7 +2806,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "avg:datadog.nozzle.bbs.LRPsDesired{deployment:cf}.rollup(avg,1800) - hour_before(datadog.nozzle.bbs.LRPsDesired{deployment:cf}.rollup(avg,1800))",
+      "query": "avg:<%= metricPrefix %>bbs.LRPsDesired{deployment:cf}.rollup(avg,1800) - hour_before(<%= metricPrefix %>bbs.LRPsDesired{deployment:cf}.rollup(avg,1800))",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2860,7 +2860,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.bbs.LRPsDesired{deployment:cf}.rollup(avg,1800) - hour_before(datadog.nozzle.bbs.LRPsDesired{deployment:cf}.rollup(avg,1800))",
+            "q": "avg:<%= metricPrefix %>bbs.LRPsDesired{deployment:cf}.rollup(avg,1800) - hour_before(<%= metricPrefix %>bbs.LRPsDesired{deployment:cf}.rollup(avg,1800))",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2899,7 +2899,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "max:datadog.nozzle.bbs.RequestLatency{deployment:cf} / 1000000000",
+      "query": "max:<%= metricPrefix %>bbs.RequestLatency{deployment:cf} / 1000000000",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -2953,7 +2953,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.bbs.RequestLatency{deployment:cf} / 1000000000",
+            "q": "max:<%= metricPrefix %>bbs.RequestLatency{deployment:cf} / 1000000000",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -2990,9 +2990,9 @@
       "calc_func": "raw"
     },
     {
-      "metric": "datadog.nozzle.bbs.ETCDWatchers",
+      "metric": "<%= metricPrefix %>bbs.ETCDWatchers",
       "custom_unit": null,
-      "query": "avg:datadog.nozzle.bbs.ETCDWatchers{deployment:cf}",
+      "query": "avg:<%= metricPrefix %>bbs.ETCDWatchers{deployment:cf}",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3048,7 +3048,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.bbs.ETCDWatchers{deployment:cf}",
+            "q": "avg:<%= metricPrefix %>bbs.ETCDWatchers{deployment:cf}",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -3087,7 +3087,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:datadog.nozzle.route_emitter.RouteEmitterSyncDuration{deployment:cf}/1000000000\n",
+      "query": "max:<%= metricPrefix %>route_emitter.RouteEmitterSyncDuration{deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3141,7 +3141,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.route_emitter.RouteEmitterSyncDuration{deployment:cf}/1000000000\n",
+            "q": "max:<%= metricPrefix %>route_emitter.RouteEmitterSyncDuration{deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -3180,7 +3180,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:datadog.nozzle.bbs.ConvergenceLRPDuration{deployment:cf}/1000000000\n",
+      "query": "max:<%= metricPrefix %>bbs.ConvergenceLRPDuration{deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3234,7 +3234,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.bbs.ConvergenceLRPDuration{deployment:cf}/1000000000\n",
+            "q": "max:<%= metricPrefix %>bbs.ConvergenceLRPDuration{deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -3273,7 +3273,7 @@
     {
       "metric": "",
       "custom_unit": "s",
-      "query": "max:datadog.nozzle.rep.RepBulkSyncDuration{deployment:cf}/1000000000\n",
+      "query": "max:<%= metricPrefix %>rep.RepBulkSyncDuration{deployment:cf}/1000000000\n",
       "text_size": "auto",
       "title_size": 13,
       "title": true,
@@ -3327,7 +3327,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.rep.RepBulkSyncDuration{deployment:cf}/1000000000\n",
+            "q": "max:<%= metricPrefix %>rep.RepBulkSyncDuration{deployment:cf}/1000000000\n",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -3373,7 +3373,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.bbs.LRPsRunning{deployment:cf}",
+            "q": "avg:<%= metricPrefix %>bbs.LRPsRunning{deployment:cf}",
             "conditional_formats": [],
             "type": "line"
           }
@@ -3387,40 +3387,11 @@
       "type": "timeseries",
       "legend": false
     },
-    {
-      "sizing": "fit",
-      "title_size": 16,
-      "title": true,
-      "url": "http://cdn.gifbay.com/2014/07/oops_as_someone_who_used_to_work_in_a_foundry_this_is_terrifying-144652.gif",
-      "margin": "",
-      "title_align": "left",
-      "title_text": "",
-      "height": 27,
-      "width": 37,
-      "y": 9,
-      "x": 164,
-      "type": "image"
-    },
-    {
-      "title_size": 16,
-      "title": true,
-      "color": "#4d4d4d",
-      "text": "PCF-Ops",
-      "title_align": "left",
-      "text_align": "left",
-      "title_text": "",
-      "height": 8,
-      "width": 37,
-      "y": 1,
-      "x": 164,
-      "font_size": "auto",
-      "type": "free_text"
-    },
     <% if len(d.CloudControllerDatabaseJobs) > 0 { %>
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3466,7 +3437,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3499,7 +3470,7 @@
     {
       "metric": "system.load.1",
       "custom_unit": "%",
-      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+      "query": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3545,7 +3516,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.CloudControllerDatabaseJobs) %>",
+            "q": "( <% for i, ccDatabaseJob := range d.CloudControllerDatabaseJobs { %><% if i == len(d.CloudControllerDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= ccDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.CloudControllerDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3578,7 +3549,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.UaaDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3624,7 +3595,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.UaaDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3657,7 +3628,7 @@
     {
       "metric": "",
       "custom_unit": "%",
-      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+      "query": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.UaaDatabaseJobs) %>",
       "board_id": 52443,
       "title_size": 16,
       "title": true,
@@ -3703,7 +3674,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * <%= 100/len(d.UaaDatabaseJobs) %>",
+            "q": "( <% for i, uaaDatabaseJob := range d.UaaDatabaseJobs { %><% if i == len(d.UaaDatabaseJobs) - 1 { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60))<% } else { %>(avg:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>,job:<%= uaaDatabaseJob %>}.rollup(avg,60)) +<% } %><% } %>) * 100 / <%= len(d.UaaDatabaseJobs) %>",
             "aggregator": "min",
             "conditional_formats": [
               {
@@ -3736,22 +3707,6 @@
       "board_id": 52443,
       "title_size": 16,
       "title": true,
-      "color": "#4d4d4d",
-      "text": "0 Days Without an Incident",
-      "title_align": "left",
-      "text_align": "left",
-      "title_text": "",
-      "height": 3,
-      "width": 37,
-      "y": 36,
-      "x": 164,
-      "font_size": "auto",
-      "type": "free_text"
-    },
-    {
-      "board_id": 52443,
-      "title_size": 16,
-      "title": true,
       "title_align": "left",
       "title_text": "Top Ephemeral Disk % Used Jobs",
       "height": 16,
@@ -3759,7 +3714,7 @@
         "viz": "toplist",
         "requests": [
           {
-            "q": "top(max:bosh.healthmonitor.system.disk.ephemeral.percent{deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
+            "q": "top(max:<%= metricPrefix %>bosh_hm_forwarder.system.disk.ephemeral.percent{deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
             "style": {
               "palette": "dog_classic"
             },
@@ -3769,8 +3724,8 @@
       },
       "width": 44,
       "timeframe": "1h",
-      "y": 56,
-      "x": 158,
+      "y": 86,
+      "x": 80,
       "legend_size": "0",
       "type": "toplist",
       "legend": false
@@ -3786,7 +3741,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "avg:datadog.nozzle.router__0.total_routes{*}",
+            "q": "avg:<%= metricPrefix %>gorouter.total_routes{deployment:cf,job:router}",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "line"
@@ -3812,7 +3767,7 @@
         "viz": "toplist",
         "requests": [
           {
-            "q": "top(min:bosh.healthmonitor.system.healthy{deployment:<%= d.Release %>} by {job}, 200, 'min', 'asc')",
+            "q": "top(min:<%= metricPrefix %>bosh_hm_forwarder.system.healthy{deployment:<%= d.Release %>} by {job}, 200, 'min', 'asc')",
             "style": {
               "palette": "dog_classic"
             },
@@ -3850,7 +3805,7 @@
       "text_align": "center",
       "title_text": "",
       "height": 5,
-      "bgcolor": "white",
+      "bgcolor": "blue",
       "html": "Front End Health & KPIs",
       "y": 2,
       "x": 0,
@@ -3863,7 +3818,7 @@
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(max:datadog.nozzle.bbs.LRPsRunning{*} + max:cf.collector.HM9000.HM9000.NumberOfRunningInstances{*})",
+      "query": "(max:<%= metricPrefix %>bbs.LRPsRunning{*} + max:cf.collector.HM9000.HM9000.NumberOfRunningInstances{*})",
       "board_id": 52443,
       "title_size": 13,
       "title": true,
@@ -3911,7 +3866,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:datadog.nozzle.bbs.LRPsRunning{*}",
+            "q": "max:<%= metricPrefix %>bbs.LRPsRunning{*}",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -3950,14 +3905,14 @@
       "text_align": "center",
       "title_text": "",
       "height": 5,
-      "bgcolor": "white",
+      "bgcolor": "blue",
       "html": "Diego Job Health",
-      "y": 2,
-      "x": 134,
+      "y": 100,
+      "x": 1,
       "font_size": "18",
       "tick": false,
       "type": "note",
-      "width": 24,
+      "width": 26 ,
       "auto_refresh": false
     },
     {
@@ -3971,41 +3926,20 @@
       "text_align": "center",
       "title_text": "",
       "height": 5,
-      "bgcolor": "white",
-      "html": "System DB Job Health",
-      "y": 27,
-      "x": 134,
-      "font_size": "18",
-      "tick": false,
-      "type": "note",
-      "width": 24,
-      "auto_refresh": false
-    },
-    {
-      "board_id": 52443,
-      "title_size": 16,
-      "title": true,
-      "refresh_every": 30000,
-      "tick_pos": "50%",
-      "title_align": "left",
-      "tick_edge": "left",
-      "text_align": "center",
-      "title_text": "",
-      "height": 5,
-      "bgcolor": "white",
+      "bgcolor": "blue",
       "html": "ERT VM Vitals",
-      "y": 45,
-      "x": 134,
+      "y": 75,
+      "x": 55,
       "font_size": "18",
       "tick": false,
       "type": "note",
-      "width": 68,
+      "width": 76,
       "auto_refresh": false
     },
     {
       "metric": "",
       "custom_unit": null,
-      "query": "(((sum:datadog.nozzle.rep.CapacityTotalMemory{deployment:cf}) -(sum:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf})) / 0.000001024 ) + (sum:cf.collector.mem_used_bytes{job:dea})",
+      "query": "(((sum:<%= metricPrefix %>rep.CapacityTotalMemory{deployment:cf}) -(sum:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf})) / 0.000001024 ) + (sum:cf.collector.mem_used_bytes{job:dea})",
       "board_id": 52443,
       "title_size": 13,
       "title": true,
@@ -4045,7 +3979,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "(((sum:datadog.nozzle.rep.CapacityTotalMemory{deployment:cf})-(sum:datadog.nozzle.rep.CapacityRemainingMemory{deployment:cf}))/0.000001024)",
+            "q": "(((sum:<%= metricPrefix %>rep.CapacityTotalMemory{deployment:cf})-(sum:<%= metricPrefix %>rep.CapacityRemainingMemory{deployment:cf}))/0.000001024)",
             "aggregator": "avg",
             "conditional_formats": [
               {
@@ -4076,7 +4010,7 @@
         "viz": "toplist",
         "requests": [
           {
-            "q": "top(max:bosh.healthmonitor.system.cpu.user{deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
+            "q": "top(max:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user{deployment:<%= d.Release %>} by {job}, 10, 'max', 'desc')",
             "style": {
               "palette": "dog_classic"
             },
@@ -4086,16 +4020,16 @@
       },
       "width": 44,
       "timeframe": "1h",
-      "y": 80,
-      "x": 158,
+      "y": 104,
+      "x": 80,
       "legend_size": "0",
       "type": "toplist",
       "legend": false
     },
     {
-      "metric": "bosh.healthmonitor.system.cpu.user",
+      "metric": "<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user",
       "custom_unit": "%",
-      "query": "max:bosh.healthmonitor.system.cpu.user{deployment:<%= d.Release %>}",
+      "query": "max:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user{deployment:<%= d.Release %>}",
       "text_size": "auto",
       "title_size": 16,
       "title": true,
@@ -4112,7 +4046,7 @@
       "precision": 2,
       "title_text": "Top CPU User (%) past hour",
       "padding": 8,
-      "x": 158,
+      "x": 55,
       "metric_type": "standard",
       "autoscale": false,
       "height": 4,
@@ -4151,7 +4085,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "max:bosh.healthmonitor.system.cpu.user{deployment:<%= d.Release %>}",
+            "q": "max:<%= metricPrefix %>bosh_hm_forwarder.system.cpu.user{deployment:<%= d.Release %>}",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -4184,7 +4118,7 @@
       },
       "res_calc_func": "raw",
       "aggr": "max",
-      "y": 74,
+      "y": 122,
       "calc_func": "raw"
     },
     {
@@ -4199,7 +4133,7 @@
         "viz": "query_value",
         "requests": [
           {
-            "q": "per_minute(max:datadog.nozzle.stager.StagingRequestsFailed{deployment:cf})",
+            "q": "per_minute(max:<%= metricPrefix %>stager.StagingRequestsFailed{deployment:cf})",
             "aggregator": "max",
             "conditional_formats": [
               {
@@ -4241,7 +4175,7 @@
       "text_align": "center",
       "title_text": "",
       "height": 5,
-      "bgcolor": "white",
+      "bgcolor": "blue",
       "html": "GO Router KPIs",
       "y": 33,
       "x": 0,
@@ -4260,13 +4194,13 @@
       "height": 20,
       "tile_def": {
         "viz": "timeseries",
-        "requests": [<% for i, routerJob := range d.RouterJobs { %><% if i == len(d.RouterJobs) - 1 { %>
+        "requests": [<% for i, routerIp := range d.RouterIps { %><% if i == len(d.RouterIps) - 1 { %>
           {
-            "q": "avg:datadog.nozzle.router__0.latency{deployment:cf,job:<%= routerJob %>}",
+            "q": "avg:<%= metricPrefix %>gorouter.latency{deployment:cf,ip:<%= routerIp %>}",
             "type": "line"
           }<% } else { %>
           {
-            "q": "avg:datadog.nozzle.router__0.latency{deployment:cf,job:<%= routerJob %>}",
+            "q": "avg:<%= metricPrefix %>gorouter.latency{deployment:cf,ip:<%= routerIp %>}",
             "type": "line"
           },<% } %><% } %>
         ],
@@ -4298,7 +4232,7 @@
         "viz": "timeseries",
         "requests": [
           {
-            "q": "per_second(avg:datadog.nozzle.router__0.total_requests{deployment:cf})",
+            "q": "per_second(avg:<%= metricPrefix %>gorouter.total_requests{deployment:cf,job:router})",
             "aggregator": "avg",
             "conditional_formats": [],
             "type": "line"

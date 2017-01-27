@@ -10,8 +10,8 @@ import (
 
 	"github.com/pivotal-golang/lager"
 
-	"github.com/pivotalservices/datadog-dashboard-gen/datadog"
-	"github.com/pivotalservices/datadog-dashboard-gen/opsman"
+	"github.com/rsamban/datadog-dashboard-gen/datadog"
+	"github.com/rsamban/datadog-dashboard-gen/opsman"
 )
 
 func main() {
@@ -25,6 +25,8 @@ func main() {
 	saveFile := flag.String("save_as", "", "Save generated dashboard on local disk")
 	uaaDomain := flag.String("uaa_domain", "", "UAA Domain")
 	version := flag.String("version", "1.7", "Ops Manager Version")
+	dashboardTitle := flag.String("title", "PCF Stoplights", "Dashboard Title")
+	metricPrefix := flag.String("metric_prefix", "", "Metric Prefix")
 
 	flag.Parse()
 
@@ -55,7 +57,12 @@ func main() {
 	if uaaDomain == nil || *uaaDomain == "" {
 		log.Fatal("uaaDomain must be provided and not empty")
 	}
-
+	if dashboardTitle == nil || *dashboardTitle == "" {
+		log.Fatal("dashboardTitle must be provided and not empty")
+	}
+	if metricPrefix == nil || *metricPrefix == "" {
+		log.Fatal("metricPrefix must be provided and not empty")
+	}
 	opsmanClient := opsman.New(*version, *opsmanIP, *opsmanUser, *opsmanPassword, *uaaDomain, logger)
 	logger.Info("opsmanClient:", lager.Data{"client": opsmanClient})
 
@@ -83,9 +90,9 @@ func main() {
 
 	var buf bytes.Buffer
 	if *useOpsMetrics {
-		err = datadog.StopLightsOpsMetricsTemplate(&buf, deployment)
+		err = datadog.StopLightsOpsMetricsTemplate(&buf, deployment, *metricPrefix, *dashboardTitle)
 	} else {
-		err = datadog.StopLightsTemplate(&buf, deployment)
+		err = datadog.StopLightsTemplate(&buf, deployment, *metricPrefix, *dashboardTitle)
 	}
 	if err != nil {
 		log.Fatal(err)

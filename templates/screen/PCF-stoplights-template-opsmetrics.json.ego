@@ -1,7 +1,7 @@
-<%! func StopLightsOpsMetricsTemplate(w io.Writer, d *opsman.Deployment) error %>
-<%% import "github.com/pivotalservices/datadog-dashboard-gen/opsman" %%>
+<%! func StopLightsOpsMetricsTemplate(w io.Writer, d *opsman.Deployment, metricPrefix string, dashboardTitle string) error %>
+<%% import "github.com/rsamban/datadog-dashboard-gen/opsman" %%>
 {
-  "board_title": "PCF Stoplights",
+  "board_title": "<%= dashboardTitle %>",
   "board_bgtype": "board_graph",
   "created": "2016-03-08T15:37:38.683101+00:00",
   "canonical_units": {

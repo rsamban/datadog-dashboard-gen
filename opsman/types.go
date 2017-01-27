@@ -12,11 +12,15 @@ type (
 		Release                     string
 		UaaJobs                     []string
 		RouterJobs                  []string
+		RouterIps                   []string
 		CloudControllerJobs         []string
 		CloudControllerDatabaseJobs []string
 		DiegoBrainJobs              []string
+		DiegoBrainIps               []string
 		DiegoCellJobs               []string
+		DiegoCellIps                []string
 		DiegoDatabaseJobs           []string
+		DiegoDatabaseIps            []string
 		UaaDatabaseJobs             []string
 	}
 
@@ -26,8 +30,12 @@ type (
 		InstallationName          string `json:"installation_name"`
 		InstanceCount             int    `json:"instance_count"`
 		AvailabilityZoneReference string `json:"availability_zone_reference"`
+		Ips                       []string
 	}
-
+	Ip struct {
+		Name string   `json:"name"`
+		Ips  []string `json:"ips"`
+	}
 	// Products contains all the installed products in an installation
 	Products struct {
 		Name string              `json:"installation_name"`

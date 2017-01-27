@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/pivotal-golang/lager"
 	http "github.com/pivotalservices/datadog-dashboard-gen/http"
@@ -66,7 +67,13 @@ func (c *Client) GetCFDeployment(installation *InstallationSettings, products []
 		return nil, fmt.Errorf("cf release not found")
 	}
 
-	return NewDeployment(installation, cfRelease), nil
+	c.GetIps(installation)
+	fmt.Printf("RAMESH:::installation-Begin\n")
+	fmt.Printf("%v\n", installation)
+	fmt.Printf("RAMESH:::installation-End\n")
+	deployment := NewDeployment(installation, cfRelease)
+	return deployment, nil
+
 }
 
 // GetInstallationSettings retrieves installation settings for cf deployment
@@ -93,6 +100,50 @@ func (c *Client) GetInstallationSettings() (*InstallationSettings, error) {
 	}
 
 	return installation, err
+}
+
+// GetIps retrieves installation settings for cf deployment
+func (c *Client) GetIps(installation *InstallationSettings) error {
+	token, err := c.fetchToken()
+	if err != nil {
+		return err
+	}
+
+	for i, product := range installation.Products {
+		url := "https://" + c.opsmanIP + "/api/v0/deployed/products/" + product.GUID + "/static_ips"
+		c.logger.Info("GetIps", lager.Data{"url": url, "access_token": token, "opsmanUsername": c.opsmanUsername, "opsmanPassword": c.opsmanPassword})
+		resp, err := http.SendRequest("GET", url, c.opsmanUsername, c.opsmanPassword, token, "")
+		if err != nil {
+			return err
+		}
+		res := bytes.NewBufferString(resp)
+		decoder := json.NewDecoder(res)
+		var ips []Ip
+		err = decoder.Decode(&ips)
+		if err != nil {
+			c.logger.Debug("Error marshalling POST body to json", lager.Data{
+				"errMessage": err.Error(),
+			})
+			return err
+		}
+		for j, job := range product.Jobs {
+			for k, partition := range job.Partition {
+				s := strings.Split(partition.InstallationName, "-")
+				s[0] = job.GUID
+				ipName := strings.Join(s, "-")
+				for _, ip := range ips {
+					if ipName == ip.Name {
+						fmt.Printf("RAMESH::: Assigning:::%s, %v \n", ipName, ip.Ips)
+						installation.Products[i].Jobs[j].Partition[k].Ips = ip.Ips
+						//temp := installation.Products[i].Jobs[j].Partition[k].Ips
+						//fmt.Printf("RAMESH:::temp %v \n", temp)
+						//partition.Ips = ip.Ips
+					}
+				}
+			}
+		}
+	}
+	return err
 }
 
 // GetProducts returns all the products in an OpsMan installation
